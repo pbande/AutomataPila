@@ -1,7 +1,7 @@
 #include "alphabet.h"
 
 Alphabet::Alphabet() {
-
+  alphabet.push_back(".");  // es correcto añadirlo o simplemente en check() devolver true si elem == .
 }
 Alphabet::~Alphabet() {
 

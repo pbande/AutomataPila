@@ -28,3 +28,15 @@ bool Transition::canTransitate(State* now, Stack* stack, std::string in) {
   if (stack.empty()) return false;
     return (now == current && stack.top() == stack_pop && in == input);
 }*/
+
+
+bool Transition::checkAlphabet(Alphabet& tape, Alphabet& stack) {
+  bool correct = true;
+  for(auto p : stack_push)  
+    if(!stack.check(p)) correct = false;
+  return (tape.check(input) && stack.check(stack_pop) && (stack_pop != ".") && correct);
+}
+
+// std::string getInput();
+// std::string getPop();
+// std::vector<std::string> getPush();

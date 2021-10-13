@@ -82,12 +82,16 @@ void AP::checkData() {
     exit(EXIT_FAILURE);
   }
 
-  for(auto t : transitions)
+  for(auto t : transitions) {
     if(t -> isNull()) {
-      std::cout << "Transición " << t -> getId() << " incorrecta";
+      std::cout << "Transición " << t -> getId() << " incorrecta (estado no existe)";
       exit(EXIT_FAILURE);
     }
-      
+    if(!t -> checkAlphabet(this->E, this->stack.T)) {
+      std::cout << "Transición " << t -> getId() << " incorrecta (elemento no pertenece al alfabeto)";
+      exit(EXIT_FAILURE);
+    }
+  } 
 }
 
 void AP::showInfo() {
