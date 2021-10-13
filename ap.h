@@ -14,10 +14,8 @@ class AP {
   Stack stack;
   State* initial_state;
   std::vector<Transition*> transitions;
-  //Tape tape;
+  std::string tape;
 
-  // vector de State?
-  // vector de transicion ??
  public:
   AP();
   AP(std::string);
@@ -27,6 +25,7 @@ class AP {
   void showInfo();
   std::vector<std::string> splitLine(std::string);
   State* findState(std::string);
-  //hahyquever gettransitions
-
+  std::vector<Transition*> possibleMoves(State*);
+  State* transit(Transition*);
+  void run(std::string);
 };

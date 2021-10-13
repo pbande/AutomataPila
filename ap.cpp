@@ -52,7 +52,7 @@ void AP::readData(std::string file) {   // Hago metodo para devolver las lineas 
     initial_state = findState(line);
       
     std::getline(apFile, line);
-    stack.push(line);
+    stack.setStart(line);
 
     std::vector<std::string> tline;
     std::vector<std::string> stack_push;
@@ -68,18 +68,15 @@ void AP::readData(std::string file) {   // Hago metodo para devolver las lineas 
   }
 }
 
-
-/*void AP::run(std::string cadena) {
-
-
-  while(!stack.empty())
-} */
-
-
 void AP::checkData() {
   if(initial_state == NULL) {
     std::cout << "Estado inicial no forma parte del conjunto de estados";
     exit(EXIT_FAILURE);
+  }
+
+  if(!stack.check()) {
+    std::cout << "Símbolo inicial de la pila no pertenece al alfabeto";
+      exit(EXIT_FAILURE);
   }
 
   for(auto t : transitions) {
@@ -87,12 +84,52 @@ void AP::checkData() {
       std::cout << "Transición " << t -> getId() << " incorrecta (estado no existe)";
       exit(EXIT_FAILURE);
     }
-    if(!t -> checkAlphabet(this->E, this->stack.T)) {
+    if(!t -> checkAlphabet(E, stack.T)) {
       std::cout << "Transición " << t -> getId() << " incorrecta (elemento no pertenece al alfabeto)";
       exit(EXIT_FAILURE);
     }
   } 
 }
+
+std::vector<Transition*> AP::possibleMoves(State* now) {
+  std::vector<Transition*> moves;
+  for(auto t : transitions)
+    if(t -> canTransitate(now, &stack, tape.substr(0, 1)))
+      moves.push_back(t);
+  return moves;
+}
+
+void AP::run(std::string cadena) {
+  tape = cadena;
+  std::string input;
+  State* now = initial_state;
+  std::vector<Transition*> moves;
+
+  while(!stack.empty()) {
+    moves = possibleMoves(now);
+    std::cout << "-----------------------------------------------\n";
+    std::cout << now -> getId() << "\t" << tape << "\t";
+    stack.print();
+    std::cout << "\t";
+    for(auto m : moves) std::cout << m -> getId() << " ";
+    std::cout << "\n";
+
+    if(!moves.empty()) 
+      transit(moves[0]); // eliminarlo del vector tmbn
+    else stack.pop();  // aqui seria lo de ir a los anteriores
+  }
+} 
+
+State* AP::transit(Transition* transition) {
+  stack.pop();
+  if(transition -> consume()) 
+    tape = tape.substr(1);
+  stack.push(transition -> getPush());
+  
+  return transition -> getNext();
+}
+
+
 
 void AP::showInfo() {
   std::cout << "Estados: ";

@@ -23,11 +23,6 @@ void Transition::print() {
   std::cout << ") ∈ δ(" << next -> getId() << ", " <<
   input << ", " << stack_pop << ")\n";
 }
-/*
-bool Transition::canTransitate(State* now, Stack* stack, std::string in) {
-  if (stack.empty()) return false;
-    return (now == current && stack.top() == stack_pop && in == input);
-}*/
 
 
 bool Transition::checkAlphabet(Alphabet& tape, Alphabet& stack) {
@@ -37,6 +32,24 @@ bool Transition::checkAlphabet(Alphabet& tape, Alphabet& stack) {
   return (tape.check(input) && stack.check(stack_pop) && (stack_pop != ".") && correct);
 }
 
-// std::string getInput();
-// std::string getPop();
-// std::vector<std::string> getPush();
+
+bool Transition::canTransitate(State* now, Stack* stack, std::string in) {
+  if (stack -> empty()) return false; // innnecesario?
+    return (now == current && stack_pop == stack -> top() && (input == in) || input == ".");
+}
+
+State* Transition::getNext() {
+  return next;
+}
+
+std::vector<std::string> Transition::getPush() {
+  return stack_push;
+}
+
+std::string Transition::getInput() {
+  return input;
+}
+
+bool Transition::consume() {
+  return input != ".";
+}
