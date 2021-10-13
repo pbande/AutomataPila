@@ -8,11 +8,11 @@ Stack::~Stack() {
 }
 
 void Stack::pop() {
-  stack.pop();
+  stack.pop_back();
 }
 
 void Stack::push(std::string elem) {  // mirar cuando pusheo varios elementos
-  stack.push(elem);
+  stack.push_back(elem);
 }
 
 
@@ -24,6 +24,6 @@ void Stack::reset() {
   stack.resize(0);
 }
 
-int Stack::top() {
-  return stack.top();
+std::string Stack::top() {
+  return stack.front();
 }

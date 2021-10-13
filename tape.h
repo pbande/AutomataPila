@@ -1,10 +1,9 @@
-#include "alphabet.h"
+#include <string>
 
 class Tape {
- public:
-  Alphabet E;
-  std::string tape;
  private:
+  std::string tape;
+ public:
   Tape();
   ~Tape();
 };

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 class Alphabet {
  private:
@@ -10,4 +11,5 @@ class Alphabet {
   ~Alphabet();
   void add(std::string);
   bool check(std::string);
+  void print();
 };
