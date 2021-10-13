@@ -18,6 +18,7 @@ State* AP::findState(std::string state_) {
   for(auto state : States)
       if(state -> getId() == state_) 
         return state;
+  std::cout << "error estado funcion findstate\n";
   return NULL;
 }
 
@@ -100,23 +101,32 @@ std::vector<Transition*> AP::possibleMoves(State* now) {
 }
 
 void AP::run(std::string cadena) {
+  int it = 0;
   tape = cadena;
   std::string input;
   State* now = initial_state;
   std::vector<Transition*> moves;
+  std::vector<ap_info*> apData;
 
-  while(!stack.empty()) {
-    moves = possibleMoves(now);
-    std::cout << "-----------------------------------------------\n";
-    std::cout << now -> getId() << "\t" << tape << "\t";
-    stack.print();
+  while(1) {
+    apData.push_back(new ap_info(now, tape, &stack, possibleMoves(now)));
+    
+    std::cout << "---------------------------------------------------\n";
+    std::cout << apData[it] -> now -> getId() << "\t" << apData[it] -> tape << "\t";
+    apData[it] -> stack -> print();
     std::cout << "\t";
-    for(auto m : moves) std::cout << m -> getId() << " ";
+    for(auto m : apData[it] -> transitions) std::cout << m -> getId() << " ";
     std::cout << "\n";
 
-    if(!moves.empty()) 
-      transit(moves[0]); // eliminarlo del vector tmbn
-    else stack.pop();  // aqui seria lo de ir a los anteriores
+    if(stack.empty() && tape.size() == 0) break;
+
+    if(!apData[it] -> transitions.empty()) {
+      transit(apData[it] -> transitions[0]);
+      apData[it] -> transitions.erase(apData[it] -> transitions.begin());
+      it++;
+    } else { 
+      it--;
+    }
   }
 } 
 
@@ -125,7 +135,7 @@ State* AP::transit(Transition* transition) {
   if(transition -> consume()) 
     tape = tape.substr(1);
   stack.push(transition -> getPush());
-  
+
   return transition -> getNext();
 }
 

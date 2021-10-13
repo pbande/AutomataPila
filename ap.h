@@ -6,6 +6,7 @@
 // #include "state.cpp"
 #include "stack.cpp"
 #include "transition.cpp"
+#include "struct.hpp"
 
 class AP {
  private:
