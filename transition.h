@@ -12,6 +12,8 @@ class Transition {
   Transition();
   Transition(State*, std::string, std::string, State*, std::vector<std::string>, int);
   ~Transition();
+  bool isNull();
   void print();
+  int getId();
   //bool canTransitate(State*, Stack*, std::string);
 };

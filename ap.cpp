@@ -81,12 +81,20 @@ void AP::checkData() {
     std::cout << "Estado inicial no forma parte del conjunto de estados";
     exit(EXIT_FAILURE);
   }
+
+  for(auto t : transitions)
+    if(t -> isNull()) {
+      std::cout << "Transición " << t -> getId() << " incorrecta";
+      exit(EXIT_FAILURE);
+    }
+      
 }
 
 void AP::showInfo() {
-  std::cout << "Estados:\n";
+  std::cout << "Estados: ";
   for(auto state : States) 
-    std::cout << "\t" << state -> getId() << " " << state -> isFinal() << "\n";
+    std::cout << state -> getId() << " ";
+    std::cout << "\n";
 
   std::cout << "Alfabeto de la entrada: ";
   E.print();
@@ -95,7 +103,7 @@ void AP::showInfo() {
   stack.T.print();
 
   std::cout << "Estado inicial: " << initial_state -> getId() << "\n";
-  std::cout << "Símbolo inicial Pila: " << stack.top() << "\n";
+  std::cout << "Símbolo inicial pila: " << stack.top() << "\n";
 
   std::cout << "Transiciones:\n";
   for(auto t : transitions)

@@ -9,8 +9,16 @@ Transition::Transition(State* current_, std::string input_, std::string top, Sta
   id = id_;
 }
 
+bool Transition::isNull() {
+  return (current == NULL || next == NULL);
+}
+
+int Transition::getId() {
+  return id;
+}
+
 void Transition::print() {
-  std::cout << id << " (" << next -> getId() << ",";
+  std::cout << id << " (" << current -> getId() << ",";
   for(auto push : stack_push) std::cout << " " << push;
   std::cout << ") ∈ δ(" << next -> getId() << ", " <<
   input << ", " << stack_pop << ")\n";
