@@ -101,31 +101,39 @@ std::vector<Transition*> AP::possibleMoves(State* now) {
 }
 
 void AP::run(std::string cadena) {
-  int it = 0;
   tape = cadena;
   std::string input;
   State* now = initial_state;
   std::vector<Transition*> moves;
-  std::vector<ap_info*> apData;
+  std::stack<ap_info*> apData;
 
   while(1) {
-    apData.push_back(new ap_info(now, tape, &stack, possibleMoves(now)));
+    apData.push(new ap_info(now, tape, &stack, possibleMoves(now)));
     
     std::cout << "---------------------------------------------------\n";
-    std::cout << apData[it] -> now -> getId() << "\t" << apData[it] -> tape << "\t";
-    apData[it] -> stack -> print();
+    std::cout << apData.top() -> now -> getId() << "\t" << apData.top() -> tape << "\t";
+    apData.top() -> stack -> print();
     std::cout << "\t";
-    for(auto m : apData[it] -> transitions) std::cout << m -> getId() << " ";
+    for(auto m : apData.top() -> transitions) std::cout << m -> getId() << " ";
     std::cout << "\n";
 
-    if(stack.empty() && tape.size() == 0) break;
+    if(stack.empty() && tape.size() == 0) {  // mirar si esta bien puesto esto aqui
+      std::cout << "Cadena pertenece al lenguaje.\n";
+      break;
+    }
 
-    if(!apData[it] -> transitions.empty()) {
-      transit(apData[it] -> transitions[0]);
-      apData[it] -> transitions.erase(apData[it] -> transitions.begin());
-      it++;
+    if(!apData.top() -> transitions.empty()) {
+      transit(apData.top() -> transitions.front());
+      apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     } else { 
-      it--;
+      while(apData.top() -> transitions.empty()) {
+        apData.pop();
+        std::cout << " uwu  ";
+      }
+    }
+    if(apData.empty()) { // me quedo sin transiciones
+      std::cout << "Cadena no pertenece al lenguaje.\n";
+      break;
     }
   }
 } 

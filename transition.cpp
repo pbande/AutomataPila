@@ -18,9 +18,9 @@ int Transition::getId() {
 }
 
 void Transition::print() {
-  std::cout << id << " (" << current -> getId() << ",";
+  std::cout << id << " (" << next -> getId() << ",";
   for(auto push : stack_push) std::cout << " " << push;
-  std::cout << ") ∈ δ(" << next -> getId() << ", " <<
+  std::cout << ") ∈ δ(" << current -> getId() << ", " <<
   input << ", " << stack_pop << ")\n";
 }
 

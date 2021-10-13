@@ -10,4 +10,4 @@ q1 a S q1 A
 q1 a A q1 A S
 q1 b A q2 .
 q2 b A q2 .
-q1 . S q2 .
+q1 . S q2 A

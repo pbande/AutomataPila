@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <stack>
 // #include "alphabet.cpp"
 // #include "state.cpp"
 #include "stack.cpp"
