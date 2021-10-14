@@ -18,7 +18,6 @@ State* AP::findState(std::string state_) {
   for(auto state : States)
       if(state -> getId() == state_) 
         return state;
-  std::cout << "error estado funcion findstate\n";
   return NULL;
 }
 
@@ -106,20 +105,17 @@ void AP::run(std::string cadena) {
   std::string input;
   std::vector<Transition*> moves;
   std::stack<ap_info*> apData;
-  int xd = 0;
 
   while(1) {
-    apData.push(new ap_info(currentState, tape, &stack, possibleMoves(currentState))); // mirar donde poner esto para que cuando vuelva hacia detras no me repita todo otra vez
+    apData.push(new ap_info(currentState, tape, stack, possibleMoves(currentState))); 
     
-    
-    xd++;
-    if (xd > 20) break;
     std::cout << "---------------------------------------------------\n";
     std::cout << apData.top() -> now -> getId() << "\t" << apData.top() -> tape << "\t";
-    apData.top() -> stack -> print();
+    apData.top() -> stack.print();
     std::cout << "\t";
     for(auto m : apData.top() -> transitions) std::cout << m -> getId() << " ";
     std::cout << "\n";
+    
     
 
     if(stack.empty() && tape.size() == 0) {  // mirar si esta bien puesto esto aqui
@@ -127,19 +123,25 @@ void AP::run(std::string cadena) {
       break;
     } 
 
+    
+
     if(!apData.top() -> transitions.empty()) {
       transit(apData.top() -> transitions.front());
       apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     } else { 
+      
       while(apData.top() -> transitions.empty()) {
         apData.pop();
-        std::cout << " uwu  ";
+        if(apData.empty()) break;
+      }
+
+      if(apData.empty()) { // me quedo sin transiciones
+        std::cout << "Cadena no pertenece al lenguaje.\n";
+        break;
       }
       restore(apData.top());
-    }
-    if(apData.empty()) { // me quedo sin transiciones
-      std::cout << "Cadena no pertenece al lenguaje.\n";
-      break;
+      transit(apData.top() -> transitions.front());
+      apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     }
   }
 } 
@@ -154,7 +156,7 @@ void AP::transit(Transition* transition) {
 
 void AP::restore(ap_info* oldData) {
   tape = oldData -> tape;
-  stack = *oldData -> stack;
+  stack = oldData -> stack;
   currentState = oldData -> now;
 }
 

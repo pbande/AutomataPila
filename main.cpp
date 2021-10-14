@@ -12,7 +12,9 @@ int main(int argc, char *argv[]) {
   AP automata(file);
 
   std::cout << "\n\n";
-  automata.run("aabb");
+  std::string cadena;
+  std::cin >> cadena;
+  automata.run(cadena);
   // cargo gramática 1vez
   // voy cargando cadenas por teclado  
 }
