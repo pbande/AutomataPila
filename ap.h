@@ -33,4 +33,5 @@ class AP {
   void run(std::string);
   void restore(ap_info*);
   void reset();
+  void printTraza(ap_info*);
 };

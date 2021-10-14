@@ -10,11 +10,13 @@ int main(int argc, char *argv[]) {
   }
   std::string file = argv[1];
   AP automata(file);
-
+  automata.showInfo();
   std::cout << "\n\n";
   std::string cadena;
-  std::cin >> cadena;
-  automata.run(cadena);
-  // cargo gramática 1vez
-  // voy cargando cadenas por teclado  
+
+  while(std::cin >> cadena && cadena != "exit") {
+    automata.run(cadena);
+    automata.reset();
+    std::cout << "\n\n";
+  }
 }

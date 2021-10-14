@@ -6,8 +6,6 @@ AP::AP() {
 AP::AP(std::string file) {
   readData(file);
   checkData(); 
-  showInfo();
-
 }
 
 AP::~AP() {
@@ -30,12 +28,12 @@ std::vector<std::string> AP::splitLine(std::string line) {
   return processedLine;
 }
 
-void AP::readData(std::string file) {   // Hago metodo para devolver las lineas en vectores / array?
+void AP::readData(std::string file) {  
   std::ifstream apFile(file);
   std::string line;
 
   if(apFile.is_open()) {
-    while(std::getline(apFile, line) && line[0] == '#') continue; // ignore first commented lines
+    while(std::getline(apFile, line) && line[0] == '#') continue;
 
     for(auto state : splitLine(line))
       States.push_back(new State(state));
@@ -109,14 +107,7 @@ void AP::run(std::string cadena) {
   while(1) {
     apData.push(new ap_info(currentState, tape, stack, possibleMoves(currentState))); 
     
-    std::cout << "---------------------------------------------------\n";
-    std::cout << apData.top() -> now -> getId() << "\t" << apData.top() -> tape << "\t";
-    apData.top() -> stack.print();
-    std::cout << "\t";
-    for(auto m : apData.top() -> transitions) std::cout << m -> getId() << " ";
-    std::cout << "\n";
-    
-    
+    printTraza(apData.top());
 
     if(stack.empty() && tape.size() == 0) {  // mirar si esta bien puesto esto aqui
       std::cout << "Cadena pertenece al lenguaje.\n";
@@ -128,8 +119,8 @@ void AP::run(std::string cadena) {
     if(!apData.top() -> transitions.empty()) {
       transit(apData.top() -> transitions.front());
       apData.top() -> transitions.erase(apData.top() -> transitions.begin());
-    } else { 
-      
+    } else {    
+      std::cout << "No se puede continuar por el camino\n";
       while(apData.top() -> transitions.empty()) {
         apData.pop();
         if(apData.empty()) break;
@@ -161,9 +152,20 @@ void AP::restore(ap_info* oldData) {
 }
 
 void AP::reset() {
-  // COMPLETAR
+  currentState = initial_state;
+  stack.reset();
+  tape.clear();
+  
 }
 
+void AP::printTraza(ap_info* fila) {
+  std::cout << "---------------------------------------------------\n";
+  std::cout << fila -> now -> getId() << "\t" << fila -> tape << "\t";
+  fila -> stack.print();
+  std::cout << "\t";
+  for(auto m : fila -> transitions) std::cout << m -> getId() << " ";
+  std::cout << "\n";
+}
 
 void AP::showInfo() {
   std::cout << "Estados: ";

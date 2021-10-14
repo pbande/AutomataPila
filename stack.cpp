@@ -31,6 +31,7 @@ bool Stack::empty() {
 
 void Stack::reset() {
   stack.resize(0);
+  stack.push_back(S);
 }
 
 std::string Stack::top() {
