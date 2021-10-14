@@ -17,6 +17,7 @@ class AP {
   State* initial_state;
   std::vector<Transition*> transitions;
   std::string tape;
+  State* currentState;
 
  public:
   AP();
@@ -28,6 +29,8 @@ class AP {
   std::vector<std::string> splitLine(std::string);
   State* findState(std::string);
   std::vector<Transition*> possibleMoves(State*);
-  State* transit(Transition*);
+  void transit(Transition*);
   void run(std::string);
+  void restore(ap_info*);
+  void reset();
 };

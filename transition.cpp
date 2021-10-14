@@ -35,7 +35,7 @@ bool Transition::checkAlphabet(Alphabet& tape, Alphabet& stack) {
 
 bool Transition::canTransitate(State* now, Stack* stack, std::string in) {
   if (stack -> empty()) return false; // innnecesario?
-    return (now == current && stack_pop == stack -> top() && (input == in) || input == ".");
+    return (now == current && stack_pop == stack -> top() && ((input == in) || input == "."));
 }
 
 State* Transition::getNext() {

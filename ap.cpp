@@ -5,7 +5,7 @@ AP::AP() {
 }
 AP::AP(std::string file) {
   readData(file);
-  checkData();
+  checkData(); 
   showInfo();
 
 }
@@ -51,6 +51,7 @@ void AP::readData(std::string file) {   // Hago metodo para devolver las lineas 
     
     std::getline(apFile, line);
     initial_state = findState(line);
+    currentState = initial_state;
       
     std::getline(apFile, line);
     stack.setStart(line);
@@ -103,24 +104,28 @@ std::vector<Transition*> AP::possibleMoves(State* now) {
 void AP::run(std::string cadena) {
   tape = cadena;
   std::string input;
-  State* now = initial_state;
   std::vector<Transition*> moves;
   std::stack<ap_info*> apData;
+  int xd = 0;
 
   while(1) {
-    apData.push(new ap_info(now, tape, &stack, possibleMoves(now)));
+    apData.push(new ap_info(currentState, tape, &stack, possibleMoves(currentState))); // mirar donde poner esto para que cuando vuelva hacia detras no me repita todo otra vez
     
+    
+    xd++;
+    if (xd > 20) break;
     std::cout << "---------------------------------------------------\n";
     std::cout << apData.top() -> now -> getId() << "\t" << apData.top() -> tape << "\t";
     apData.top() -> stack -> print();
     std::cout << "\t";
     for(auto m : apData.top() -> transitions) std::cout << m -> getId() << " ";
     std::cout << "\n";
+    
 
     if(stack.empty() && tape.size() == 0) {  // mirar si esta bien puesto esto aqui
       std::cout << "Cadena pertenece al lenguaje.\n";
       break;
-    }
+    } 
 
     if(!apData.top() -> transitions.empty()) {
       transit(apData.top() -> transitions.front());
@@ -130,6 +135,7 @@ void AP::run(std::string cadena) {
         apData.pop();
         std::cout << " uwu  ";
       }
+      restore(apData.top());
     }
     if(apData.empty()) { // me quedo sin transiciones
       std::cout << "Cadena no pertenece al lenguaje.\n";
@@ -138,15 +144,23 @@ void AP::run(std::string cadena) {
   }
 } 
 
-State* AP::transit(Transition* transition) {
+void AP::transit(Transition* transition) {
   stack.pop();
   if(transition -> consume()) 
     tape = tape.substr(1);
   stack.push(transition -> getPush());
-
-  return transition -> getNext();
+  currentState = transition -> getNext();
 }
 
+void AP::restore(ap_info* oldData) {
+  tape = oldData -> tape;
+  stack = *oldData -> stack;
+  currentState = oldData -> now;
+}
+
+void AP::reset() {
+  // COMPLETAR
+}
 
 
 void AP::showInfo() {
