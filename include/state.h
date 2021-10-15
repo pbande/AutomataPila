@@ -1,3 +1,5 @@
+#ifndef STATE_H
+#define STATE_H
 #include <string>
 
 class State {
@@ -6,9 +8,10 @@ class State {
   std::string id;
  public:
   State();
-  State(std::string, bool);
+  State(std::string, bool = false);
   ~State();
   void setFinal();
   bool isFinal();
   std::string getId();
 };
+#endif

@@ -4,7 +4,7 @@ State::State() {
 
 }
 
-State::State(std::string id_, bool final_ = false) {
+State::State(std::string id_, bool final_) {
   id = id_;
   final = final_;
 }

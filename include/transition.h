@@ -1,8 +1,10 @@
-#include "state.cpp"
+#ifndef TRANSITION_H
+#define TRANSITION_H
 
-class Alphbet;
-class State;
-class Stack;
+#include <vector>
+#include "state.h"
+#include "alphabet.h"
+#include "stack.h"
 
 class Transition {
  private:
@@ -26,3 +28,4 @@ class Transition {
   std::vector<std::string> getPush();
   std::string getInput();
 };
+#endif

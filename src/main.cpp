@@ -1,7 +1,6 @@
 #include <iostream>
-#include <fstream>
 #include <string>
-#include "ap.cpp"
+#include "ap.h"
 
 int main(int argc, char *argv[]) {
   if (argc != 2) { 

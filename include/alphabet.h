@@ -1,3 +1,6 @@
+#ifndef ALPHABET_H
+#define ALPHABET_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,3 +16,4 @@ class Alphabet {
   bool check(std::string);
   void print();
 };
+#endif

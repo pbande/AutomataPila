@@ -102,10 +102,10 @@ void AP::run(std::string cadena) {
   tape = cadena;
   std::string input;
   std::vector<Transition*> moves;
-  std::stack<ap_info*> apData;
+  std::stack<Ap_info*> apData;
 
   while(1) {
-    apData.push(new ap_info(currentState, tape, stack, possibleMoves(currentState))); 
+    apData.push(new Ap_info(currentState, tape, stack, possibleMoves(currentState))); 
     
     printTraza(apData.top());
 
@@ -145,7 +145,7 @@ void AP::transit(Transition* transition) {
   currentState = transition -> getNext();
 }
 
-void AP::restore(ap_info* oldData) {
+void AP::restore(Ap_info* oldData) {
   tape = oldData -> tape;
   stack = oldData -> stack;
   currentState = oldData -> now;
@@ -158,8 +158,8 @@ void AP::reset() {
   
 }
 
-void AP::printTraza(ap_info* fila) {
-  std::cout << "---------------------------------------------------\n";
+void AP::printTraza(Ap_info* fila) {
+  std::cout << "------------------------------------\n";
   std::cout << fila -> now -> getId() << "\t" << fila -> tape << "\t";
   fila -> stack.print();
   std::cout << "\t";

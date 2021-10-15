@@ -1,13 +1,16 @@
+#ifndef AP_H
+#define AP_H
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <stack>
-// #include "alphabet.cpp"
-// #include "state.cpp"
-#include "stack.cpp"
-#include "transition.cpp"
-#include "struct.hpp"
+
+#include <vector>
+#include "state.h"
+#include "stack.h"
+#include "transition.h"
+#include "ap_info.h"
 
 class AP {
  private:
@@ -31,7 +34,8 @@ class AP {
   std::vector<Transition*> possibleMoves(State*);
   void transit(Transition*);
   void run(std::string);
-  void restore(ap_info*);
+  void restore(Ap_info*);
   void reset();
-  void printTraza(ap_info*);
+  void printTraza(Ap_info*);
 };
+#endif
