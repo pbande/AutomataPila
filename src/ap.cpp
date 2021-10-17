@@ -110,31 +110,35 @@ void AP::run(std::string cadena) {
   std::stack<Ap_info*> apData;
 
   while(1) {
-    apData.push(new Ap_info(currentState, tape, stack, possibleMoves(currentState)));
+    apData.push(new Ap_info(currentState, tape, stack, possibleMoves(currentState))); // guardo info actual
     if(traza)
       printTraza(apData.top());
-    if(stack.empty() && tape.size() == 0) {
+    if(stack.empty() && tape.size() == 0) { // si pila vacia y cadena consumida, pertenece
       std::cout << "Cadena pertenece al lenguaje.\n";
       break;
     } 
 
-    if(!apData.top() -> transitions.empty()) {
+    if(!apData.top() -> transitions.empty()) { // si tengo transicion dispoible la hago y la elimino(usada)
       transit(apData.top() -> transitions.front());
       apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     } else {    
       if(traza)
         std::cout << "No se puede continuar por el camino\n";
-      while(apData.top() -> transitions.empty()) {
+      while(apData.top() -> transitions.empty()) { // retrocedo hasta encontrar transicion disponible no usada
         apData.pop();
-        if(apData.empty()) break;
+        if(apData.empty()) // si ya no puedo seguir por ningun camino me salgo
+          break;
       }
 
-      if(apData.empty()) {
+      if(apData.empty()) { // me quedo sin transiciones posibles
         std::cout << "Cadena no pertenece al lenguaje.\n";
         break;
       }
-      restore(apData.top());
-      transit(apData.top() -> transitions.front());
+
+      restore(apData.top()); // dejo automata como estaba previamente
+      if(traza)
+        printTraza(apData.top());
+      transit(apData.top() -> transitions.front()); // transito a la disponible y elimino
       apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     }
   }

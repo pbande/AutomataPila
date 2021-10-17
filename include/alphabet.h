@@ -13,7 +13,7 @@ class Alphabet {
   Alphabet();
   ~Alphabet();
   void add(std::string);
-  bool check(std::string);
+  bool check(std::string); // comprobar si elemento pertenece al lenguaje
   void print();
 };
 #endif
