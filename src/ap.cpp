@@ -1,15 +1,15 @@
 #include "ap.h"
 
 AP::AP() {
-
 }
-AP::AP(std::string file) {
+
+AP::AP(std::string file, bool traza_) {
+  traza = traza_;
   readData(file);
   checkData(); 
 }
 
 AP::~AP() {
-  
 }
 
 State* AP::findState(std::string state_) {
@@ -59,11 +59,15 @@ void AP::readData(std::string file) {
     while(std::getline(apFile, line)) {
       tline = splitLine(line);
       stack_push = std::vector<std::string> (tline.begin() + 4, tline.end());
-      transitions.push_back(new Transition(findState(tline[0]), tline[1], tline[2], findState(tline[3]), stack_push, id));
+      transitions.push_back(new Transition(findState(tline[0]), tline[1], tline[2],
+        findState(tline[3]), stack_push, id));
       id++;
     }
-
+    
     apFile.close();
+  } else {
+    std::cout << "Error al abrir fichero";
+    exit(EXIT_FAILURE);
   }
 }
 
@@ -84,7 +88,8 @@ void AP::checkData() {
       exit(EXIT_FAILURE);
     }
     if(!t -> checkAlphabet(E, stack.T)) {
-      std::cout << "Transición " << t -> getId() << " incorrecta (elemento no pertenece al alfabeto)";
+      std::cout << "Transición " << t -> getId() << 
+        " incorrecta (elemento no pertenece al alfabeto)";
       exit(EXIT_FAILURE);
     }
   } 
@@ -105,28 +110,26 @@ void AP::run(std::string cadena) {
   std::stack<Ap_info*> apData;
 
   while(1) {
-    apData.push(new Ap_info(currentState, tape, stack, possibleMoves(currentState))); 
-    
-    printTraza(apData.top());
-
-    if(stack.empty() && tape.size() == 0) {  // mirar si esta bien puesto esto aqui
+    apData.push(new Ap_info(currentState, tape, stack, possibleMoves(currentState)));
+    if(traza)
+      printTraza(apData.top());
+    if(stack.empty() && tape.size() == 0) {
       std::cout << "Cadena pertenece al lenguaje.\n";
       break;
     } 
-
-    
 
     if(!apData.top() -> transitions.empty()) {
       transit(apData.top() -> transitions.front());
       apData.top() -> transitions.erase(apData.top() -> transitions.begin());
     } else {    
-      std::cout << "No se puede continuar por el camino\n";
+      if(traza)
+        std::cout << "No se puede continuar por el camino\n";
       while(apData.top() -> transitions.empty()) {
         apData.pop();
         if(apData.empty()) break;
       }
 
-      if(apData.empty()) { // me quedo sin transiciones
+      if(apData.empty()) {
         std::cout << "Cadena no pertenece al lenguaje.\n";
         break;
       }

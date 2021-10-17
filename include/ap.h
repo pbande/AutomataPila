@@ -21,10 +21,11 @@ class AP {
   std::vector<Transition*> transitions;
   std::string tape;
   State* currentState;
+  bool traza;
 
  public:
   AP();
-  AP(std::string);
+  AP(std::string, bool traza_ = false);
   ~AP();
   void readData(std::string);
   void checkData();

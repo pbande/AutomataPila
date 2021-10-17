@@ -5,9 +5,9 @@
 
 class Stack {
  private:
-  Alphabet T;
+  Alphabet T; // alfabeto de la pila
   std::vector<std::string> stack;
-  std::string S;
+  std::string S; // simbolo de inicio de la pila
  public:
   Stack();
   Stack(std::string);
@@ -21,6 +21,6 @@ class Stack {
   bool check();
   void print();
   std::string top();
-  friend class AP;  // cambiar y crear metodos o no es necesario?
+  friend class AP;
 };
 #endif

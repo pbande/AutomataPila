@@ -4,14 +4,14 @@
 
 class State {
  private:
-  bool final;
-  std::string id;
+  bool final; 
+  std::string id; // nombre del estado
  public:
   State();
   State(std::string, bool = false);
   ~State();
-  void setFinal();
-  bool isFinal();
-  std::string getId();
+  void setFinal(); // no lo uso pq es APv
+  bool isFinal(); // no lo uso pq es APv
+  std::string getId(); 
 };
 #endif

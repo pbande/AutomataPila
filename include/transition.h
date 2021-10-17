@@ -13,7 +13,7 @@ class Transition {
   std::string input;
   std::string stack_pop;
   std::vector<std::string> stack_push;
-  int id;
+  int id; // para identificar las transiciones en la traza
  public:
   Transition();
   Transition(State*, std::string, std::string, State*, std::vector<std::string>, int);
