@@ -1,0 +1,1 @@
+g++ -o automata -I ../include ../src/*.cpp
